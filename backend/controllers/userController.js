@@ -4,7 +4,12 @@ const bcrypt = require('bcrypt');
 const userGiris = async (req,res) => {
     try {
         const user = await User.girisYap(req.body.email,req.body.sifre);
-        res.send(user);
+        
+        const token = await user.generateToken();
+        res.send({
+            user,
+            token
+        })
     } catch (error) {
         console.log(error);
     }

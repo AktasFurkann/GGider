@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 // const Joi = require('joi');
 const bcrypt = require('bcrypt');
-
+const jwt = require('jsonwebtoken');
 
 const userSchema = new Schema({
     email:{
@@ -28,6 +28,13 @@ const userSchema = new Schema({
 
 //     return schema.validate(userObject);
 // }
+
+userSchema.methods.generateToken = async function (){
+    const girisYapanUser = this;
+    const token = await jwt.sign({_id:girisYapanUser._id},"secretkey",{expiresIn : "1h"});
+
+    return token;
+}
 
 
 userSchema.statics.girisYap = async (email,sifre) => {
