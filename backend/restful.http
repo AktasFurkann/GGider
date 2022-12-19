@@ -1,0 +1,26 @@
+GET http://localhost:3000/api/users
+
+###
+
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    "email" : "furkanakt@gmail.com",
+    "sifre" : "1231231"
+}
+
+###
+
+POST http://localhost:3000/api/users/giris
+Content-Type: application/json
+
+{
+    "email" : "furkanakt@gmail.com",
+    "sifre" : "1231231"
+}
+
+###
+
+DELETE http://localhost:3000/api/giderler/6395d2787a48ea0056536bcc
+Content-Type: application/json
