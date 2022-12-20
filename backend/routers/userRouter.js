@@ -6,6 +6,7 @@ const authMiddleware = require('../middlewares/authMiddleware.js');
 router.get("/", userController.userGetir);
 
 router.get("/me" , authMiddleware ,(req,res,next) => {
+    console.log("routerdayım");
     res.send(req.user);
 })
 

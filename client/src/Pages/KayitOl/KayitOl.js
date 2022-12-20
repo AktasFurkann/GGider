@@ -20,10 +20,9 @@ function KayitOl() {
         },
         validationSchema,
         onSubmit: async (values ,bag) => {
-
             try {
                 const registerResponse = await kullaniciKayit({email : values.email , sifre: values.sifre});
-                console.log(registerResponse);
+                login(registerResponse);
                 if (registerResponse.code === 11000 ) {
                     bag.setErrors({general : "Bu e-mail kullanımda"})
                 }

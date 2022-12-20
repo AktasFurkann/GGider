@@ -5,8 +5,13 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import  './style.css'
+import {useAuth} from '../contexts/authContext';
 
 function Header() {
+
+  const {loggedIn} = useAuth();
+
+  console.log(loggedIn);
   const navigate = useNavigate();
   return (
     <div>
@@ -35,8 +40,20 @@ function Header() {
           </Nav>
            <Form className="d-flex">
            <ButtonGroup gap='2'>
-      <Button colorScheme='cyan' >Giriş Yap</Button>
-      <Button colorScheme='cyan' onClick={() => navigate("/KayitOl")}>Kayıt Ol</Button>
+            {
+              !loggedIn && (<>
+                <Button colorScheme='cyan' >Giriş Yap</Button>
+          <Button colorScheme='cyan' onClick={() => navigate("/KayitOl")}>Kayıt Ol</Button>
+                </>)
+            }
+
+            {
+              loggedIn && (<>
+              <Button colorScheme='pink' onClick={() => navigate("/Profile")}>Profile</Button>
+              </>)
+            }
+      
+
     </ButtonGroup>
             </Form> 
         </Navbar.Collapse>

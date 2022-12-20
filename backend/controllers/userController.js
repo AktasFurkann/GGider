@@ -27,11 +27,12 @@ const userGetir = async (req,res) => {
 const userEkle = async (req,res) => {
     try {
         const eklenecekUser =  new User(req.body);
+        const token = await eklenecekUser.generateToken();
         
         eklenecekUser.sifre = await bcrypt.hash(eklenecekUser.sifre,8);
 
-            const sonuc = await eklenecekUser.save();
-            res.send(sonuc);
+            const user = await eklenecekUser.save();
+            res.send({user,token});
 
     } catch (error) {
         res.send(error);
