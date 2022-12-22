@@ -31,7 +31,7 @@ const userSchema = new Schema({
 
 userSchema.methods.generateToken = async function (){
     const girisYapanUser = this;
-    const token = await jwt.sign({_id:girisYapanUser._id},"secretkey",{expiresIn : "1h"});
+    const token = await jwt.sign({_id:girisYapanUser._id},"secretkey",{expiresIn : "1d"});
 
     return token;
 }
@@ -41,16 +41,18 @@ userSchema.statics.girisYap = async (email,sifre) => {
 
     const user = await User.findOne({email})
     if (!user) {
-        console.log("email veya şifre hatalı");
+        res.send("email veya şifre hatalı");
     }
     
     const sifreKontrol = await bcrypt.compare(sifre, user.sifre);
     if (!sifreKontrol) {
-        console.log("sifre veya email hatalı");
+        res.send("sifre veya email hatalı");
     }
 
     return user;
 } 
+
+
 
 
 const User = mongoose.model('User',userSchema);

@@ -2,17 +2,24 @@ import { Container,Form,Nav,Navbar,NavDropdown} from 'react-bootstrap';
 import { Button, ButtonGroup, Image  } from '@chakra-ui/react'
 
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 
 import  './style.css'
-import {useAuth} from '../contexts/authContext';
+import {UseAuth} from '../contexts/authContext';
 
 function Header() {
-
-  const {loggedIn} = useAuth();
+  
+  const {loggedIn , logOut} = UseAuth();
+  const navigate = useNavigate();
 
   console.log(loggedIn);
-  const navigate = useNavigate();
+  
+  const handleLogout = () => {
+    logOut();
+  }
+
+  
+  
   return (
     <div>
             
@@ -31,9 +38,9 @@ function Header() {
             <Nav.Link className='navbarDeneme' onClick={() => navigate("/")}>Ana Sayfa</Nav.Link>
             <NavDropdown className='navbarDeneme' title="İşlemler" id="basic-nav-dropdown">
 
-              <NavDropdown.Item   onClick={() => navigate("/Gelir")}>Gelir</NavDropdown.Item>
+              <NavDropdown.Item   href="/Gelir">Gelir</NavDropdown.Item>
 
-              <NavDropdown.Item onClick={() => navigate("/Gider")}>Gider</NavDropdown.Item>
+              <NavDropdown.Item href="/Gider">Gider</NavDropdown.Item>
               <NavDropdown.Divider />
               
             </NavDropdown>
@@ -42,14 +49,15 @@ function Header() {
            <ButtonGroup gap='2'>
             {
               !loggedIn && (<>
-                <Button colorScheme='cyan' >Giriş Yap</Button>
-          <Button colorScheme='cyan' onClick={() => navigate("/KayitOl")}>Kayıt Ol</Button>
+                <Button colorScheme='cyan' onClick={() => navigate("/Giris")}>Giriş Yap</Button>
+                <Button colorScheme='cyan' onClick={() => navigate("/KayitOl")}>Kayıt Ol</Button>
                 </>)
             }
 
             {
               loggedIn && (<>
               <Button colorScheme='pink' onClick={() => navigate("/Profile")}>Profile</Button>
+              <Button colorScheme='pink' onClick={handleLogout}>Çıkış</Button>
               </>)
             }
       

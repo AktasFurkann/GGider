@@ -40,6 +40,7 @@ function Gider() {
 
   const formik = useFormik({
     initialValues : {
+        user:localStorage.getItem('userid'),
         tarih:date,
         aciklama:"",
         miktar:""

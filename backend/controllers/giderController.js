@@ -1,7 +1,7 @@
 const Gider = require("../models/giderModel");
 
 const giderleriListele = async (req,res) => {
-    const tumGiderler = await Gider.find({});
+    const tumGiderler = await Gider.find({user:req.headers.user});
     res.json(tumGiderler);
 }
 

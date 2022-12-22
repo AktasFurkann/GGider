@@ -10,6 +10,7 @@ import Gider from './Pages/Gider/Gider';
 import Header from './components/Header';
 import KayitOl from './Pages/KayitOl/KayitOl';
 import Profile from './Pages/Profile/Profile';
+import Giris from './Pages/Giris/Giris';
 
 
 
@@ -31,7 +32,8 @@ function App() {
 <Route path='Gelir' element={ <Gelir></Gelir> }/>
 <Route path='Gider' element={ <Gider></Gider> }/>
 <Route path='KayitOl' element={ <KayitOl></KayitOl> }/>
-<Route path='Profile' element={ <Profile></Profile> }/>
+<Route path='Profile'  element={ <Profile></Profile> }/>
+<Route path='Giris'  element={ <Giris></Giris> }/>
 
 </Routes>
 </BrowserRouter>

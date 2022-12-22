@@ -1,19 +1,20 @@
 import axios from 'axios'
 
 
-
 axios.interceptors.request.use(
    function (config) {
       const {origin} = new URL(config.url);
 
-      const allowedOrigins = ["http://localhost:3000/api"];
+      const allowedOrigins = ["http://localhost:3000"];
       const token = localStorage.getItem("access-token");
+      
 
-      console.log(token);
       
       if (allowedOrigins.includes(origin)) {
-         console.log(token);
-         
+         if (token) {
+         config.headers.authorization = "Bearer "+token;
+         config.headers.user = localStorage.getItem('userid');
+         }
       }
 
       return config
@@ -22,6 +23,7 @@ axios.interceptors.request.use(
       return console.log("api dosyasında hata çıktı", error);
    }
 )
+
 
 export const gelirleriGetir = async () => {
    const {data} = await axios.get('http://localhost:3000/api/gelirler')
@@ -67,8 +69,21 @@ export const kullaniciKayit = async (input) => {
 }
 
 export const fetcMe = async () => {
-   const {data} = await axios.get('http://localhost:3000/api/users/me', { headers: {"Authorization" : `Bearer ${localStorage.getItem('access-token')}`}});
+   const {data} = await axios.get('http://localhost:3000/api/users/me');
 
    return data
    
+}
+
+export const kullaniciGiris = async (input) => {
+   const {data} = await axios.post('http://localhost:3000/api/users/giris' ,input);
+
+   return data
+}
+
+export const kullaniciCikis = async () => {
+   const {data} = await axios.post('http://localhost:3000/api/users/logout' , {
+      access_token : localStorage.getItem('access-token'),
+   });
+   return data;
 }

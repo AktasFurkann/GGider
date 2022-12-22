@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const gelirSchema = new Schema({
     user:{
-        type: Schema.Types.ObjectId,
-        ref:'user'
+        type: String,
+        required: true
     },
     tarih:{
         type :String,

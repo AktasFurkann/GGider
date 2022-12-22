@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const giderSchema = new Schema({
+    user:{
+        type: String,
+        required: true
+    },
     tarih:{
         type :String,
         required : true,

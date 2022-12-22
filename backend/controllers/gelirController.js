@@ -1,19 +1,22 @@
 const Gelir = require("../models/gelirModel");
 
 const gelirleriListele = async (req,res) => {
-    const tumGelirler = await Gelir.find({});
+    console.log(req.headers.user);
+    const tumGelirler = await Gelir.find({user:req.headers.user});
     res.json(tumGelirler);
 }
 
 const gelirEkle = async (req,res) => {
     try {
+        console.log(req.body);
+
         const eklenecekGelir =  new Gelir(req.body);
         const sonuc = await eklenecekGelir.save();
         
 
         res.send(sonuc);
     } catch (error) {
-        console.log("gelir eklenirken hata oldu");
+        console.log("gelir eklenirken hata oldu" + error);
         
     }    
 }

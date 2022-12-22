@@ -6,11 +6,12 @@ import {useFormik} from 'formik'
 
 import validationSchema from './validations'
 
-import {useAuth} from '../../contexts/authContext';
+import {UseAuth} from '../../contexts/authContext';
+
 
 function KayitOl() {
 
-    const {login} = useAuth();
+    const {login} = UseAuth();
 
     const formik = useFormik({
         initialValues:{
@@ -70,7 +71,7 @@ function KayitOl() {
                         <Input name='sifreOnay' type="password" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.sifreOnay} isInvalid={formik.touched.sifre && formik.errors.sifreOnay}></Input>
                     </FormControl>
 
-                    <Button mt={4} width='full' type='submit'>
+                    <Button mt={4} width='full' type='submit' >
                         Kayıt Ol
                     </Button>
                 </form>
