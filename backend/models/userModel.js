@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 // const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const createError = require('http-errors');
 
 const userSchema = new Schema({
     email:{
@@ -40,13 +41,14 @@ userSchema.methods.generateToken = async function (){
 userSchema.statics.girisYap = async (email,sifre) => {
 
     const user = await User.findOne({email})
+
     if (!user) {
-        res.send("email veya şifre hatalı");
+        throw createError(400, "Girilen e-mail veya şifre hatalı");
     }
     
     const sifreKontrol = await bcrypt.compare(sifre, user.sifre);
     if (!sifreKontrol) {
-        res.send("sifre veya email hatalı");
+        throw createError(400, "Girilen e-mail veya şifre hatalı");
     }
 
     return user;

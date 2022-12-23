@@ -1,4 +1,8 @@
+const { UNSAFE_NavigationContext } = require("react-router-dom");
 const Gider = require("../models/giderModel");
+
+var createError = require('http-errors');
+
 
 const giderleriListele = async (req,res) => {
     const tumGiderler = await Gider.find({user:req.headers.user});
@@ -18,15 +22,21 @@ const giderEkle = async (req,res) => {
     }    
 }
 
-const giderSil = async (req,res) => {
+const giderSil = async (req,res,next) => {
     const {gider_id} = req.params;
 
     try {
            const deleted = await Gider.findByIdAndDelete(gider_id)
 
-           res.send(deleted);
-    } catch (error) {
-        console.log("veri silinirken hata oluştu!" + error);
+           if (deleted) {
+            return res.json({mesaj : "kullanıcı silindi"});
+           } else {
+            throw createError(404,"kullanıcı bulunamadı");
+           }
+
+           
+    } catch (e) {
+        next(e);
     }
 }
 

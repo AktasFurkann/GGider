@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Heading,Box,FormControl,FormLabel,Input,Button,Alert } from '@chakra-ui/react'
+import { Flex, Heading,Box,FormControl,FormLabel,Input,Button,Alert, FormErrorMessage } from '@chakra-ui/react'
 import {kullaniciKayit} from '../../api'
 
 import {useFormik} from 'formik'
@@ -7,9 +7,13 @@ import {useFormik} from 'formik'
 import validationSchema from './validations'
 
 import {UseAuth} from '../../contexts/authContext';
+import { useNavigate } from 'react-router-dom'
 
 
 function KayitOl() {
+
+  const navigate = useNavigate();
+
 
     const {login} = UseAuth();
 
@@ -23,10 +27,14 @@ function KayitOl() {
         onSubmit: async (values ,bag) => {
             try {
                 const registerResponse = await kullaniciKayit({email : values.email , sifre: values.sifre});
-                login(registerResponse);
-                if (registerResponse.code === 11000 ) {
+                if (registerResponse.hataKodu === 400 ) {
                     bag.setErrors({general : "Bu e-mail kullanımda"})
                 }
+                else{
+                    console.log(registerResponse);
+                    login(registerResponse);
+                    navigate("/");
+                }                
             } catch (e) {
                 console.log(e);
             }
@@ -51,24 +59,41 @@ function KayitOl() {
             </Box>
             <Box my={5} textAlign="left">
                 <form onSubmit={formik.handleSubmit} >
-                    <FormControl>
+                    <FormControl isInvalid={formik.touched.email && formik.errors.email}>
                         <FormLabel>E-mail</FormLabel>
                             <Input name='email'
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.email}
-                        isInvalid={formik.touched.email && formik.errors.email}>
-                            </Input>                        
+                        value={formik.values.email}>
+                            </Input>              
+
+                            <FormErrorMessage>{formik.errors.email}</FormErrorMessage>          
                     </FormControl>
 
-                    <FormControl mt={4}>
+                    <FormControl mt={4} isInvalid={formik.touched.sifre && formik.errors.sifre}>
                         <FormLabel>Şifre</FormLabel>
-                        <Input name='sifre' type="password" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.sifre} isInvalid={formik.touched.sifre && formik.errors.sifre}></Input>
+                        <Input name='sifre'
+                         type="password" 
+                         onChange={formik.handleChange} 
+                         onBlur={formik.handleBlur} 
+                         value={formik.values.sifre} 
+                         ></Input>
+
+                        <FormErrorMessage>{formik.errors.sifre}</FormErrorMessage>
+
                     </FormControl>
 
-                    <FormControl mt={4}>
+                    <FormControl mt={4} isInvalid={formik.touched.sifreOnay && formik.errors.sifreOnay}>
                         <FormLabel>Şifre Onay</FormLabel>
-                        <Input name='sifreOnay' type="password" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.sifreOnay} isInvalid={formik.touched.sifre && formik.errors.sifreOnay}></Input>
+                        <Input name='sifreOnay' 
+                        type="password" 
+                        onChange={formik.handleChange} 
+                        onBlur={formik.handleBlur} 
+                        value={formik.values.sifreOnay} 
+                        
+                        
+                        ></Input>
+                        <FormErrorMessage>{formik.errors.sifreOnay}</FormErrorMessage>
                     </FormControl>
 
                     <Button mt={4} width='full' type='submit' >

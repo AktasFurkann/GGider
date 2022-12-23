@@ -1,6 +1,8 @@
 const express = require('express');
 require('./db/dbConnection');
 
+const hataMiddleware = require('./middlewares/hataMiddleware');
+
 const app = express();
 
 const cors = require('cors');
@@ -13,6 +15,7 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 
 //Routes
 const gelirRouter = require('./routers/gelirRouter');
@@ -38,7 +41,7 @@ app.use('/' , (req,res) => {
 })
 
 
-
+app.use(hataMiddleware)
 
 app.listen(3000 , () => {
 console.log("server 3000 portundan ayaklandırıldı");

@@ -1,4 +1,4 @@
-GET http://localhost:3000/api/users
+GET http://localhost:3000/api/giderler
 
 ###
 
@@ -22,5 +22,5 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/api/giderler/6395d2787a48ea0056536bcc
+DELETE http://localhost:3000/api/giderler/63a5dc23ea81e108f22767fe
 Content-Type: application/json

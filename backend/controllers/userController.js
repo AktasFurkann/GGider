@@ -1,8 +1,10 @@
 const User = require("../models/userModel");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+var createError = require('http-errors');
 
-const userGiris = async (req,res) => {
+
+const userGiris = async (req,res,next) => {
     try {
         const user = await User.girisYap(req.body.email,req.body.sifre);
         console.log(user);
@@ -12,8 +14,8 @@ const userGiris = async (req,res) => {
             token
         })
         console.log("aleyküm selam");
-    } catch (error) {
-        console.log(error);
+    } catch (e) {
+        next(e);
     }
 }
 
@@ -26,26 +28,30 @@ const userGetir = async (req,res) => {
     }
 }
 
-const userEkle = async (req,res) => {
+const userEkle = async (req,res,next) => {
     try {
         const eklenecekUser = await new User(req.body);
         const eklenenMail = eklenecekUser.email;
 
         const kisi = await User.findOne({email : eklenenMail})
-        
+
+        if (kisi) {
+            throw createError(400,"bu mail zaten kullanımda");
+        }
+        else{
         const token = await eklenecekUser.generateToken();
-        
-        if (!kisi) {
+
             eklenecekUser.sifre = await bcrypt.hash(eklenecekUser.sifre,8);
 
             const user = await eklenecekUser.save();
             res.send({user,token});
         }
         
+        
+        
 
     } catch (error) {
-        console.log("selam");
-        res.send(error);
+        next(error)
     }    
 }
 

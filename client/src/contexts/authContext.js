@@ -2,20 +2,21 @@ import { Flex, Spinner } from '@chakra-ui/react';
 import {useState,createContext,useEffect,useContext} from 'react'
 import { fetcMe, kullaniciCikis } from '../api';
 
+
+
 const AuthContext = createContext();
 
 const AuthProvider = ({children}) => {
+
     const [user , setUser] = useState(null);
     const [loggedIn , setLoggedIn] = useState(false);
 
     const [loading,setLoading] = useState(true);
-    console.log(user);
 
     useEffect(() => {
         (async () => {
             try {
                 const me = await fetcMe();
-                console.log("me",me);
                 if (me !== "token yok") {
                     setLoggedIn(true);
                 setUser(me);
@@ -45,6 +46,7 @@ const AuthProvider = ({children}) => {
 
         localStorage.removeItem('access-token');
         localStorage.removeItem('userid');
+
       }
 
     const values = {
