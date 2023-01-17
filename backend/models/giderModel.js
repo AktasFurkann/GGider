@@ -19,10 +19,16 @@ const giderSchema = new Schema({
     },
     aciklama:{
         type: String,
-        required:true,
         lowercase :true,
         trim : true,
-    }  
+    },
+    kategori:{
+        type: String,
+        required: true,
+        lowercase: true,
+        trim: true
+    }
+    
 },{collection : 'giderler' , timestamps : true});
 
 const Gider = mongoose.model('Gider',giderSchema);

@@ -7,13 +7,12 @@ var createError = require('http-errors');
 const userGiris = async (req,res,next) => {
     try {
         const user = await User.girisYap(req.body.email,req.body.sifre);
-        console.log(user);
-        const token = await user.generateToken();
+        const {token,refreshToken} = await user.generateToken();
         res.send({
             user,
-            token
+            token,
+            refreshToken
         })
-        console.log("aleyküm selam");
     } catch (e) {
         next(e);
     }
@@ -39,12 +38,12 @@ const userEkle = async (req,res,next) => {
             throw createError(400,"bu mail zaten kullanımda");
         }
         else{
-        const token = await eklenecekUser.generateToken();
+        const {token,refreshToken} = await eklenecekUser.generateToken();
 
             eklenecekUser.sifre = await bcrypt.hash(eklenecekUser.sifre,8);
 
             const user = await eklenecekUser.save();
-            res.send({user,token});
+            res.send({user,token,refreshToken});
         }
         
         
@@ -57,12 +56,12 @@ const userEkle = async (req,res,next) => {
 
 const userLogout = async (req,res) => {
 try {
-    const token =  req.header('access_token').replace('Bearer ','');
+    const token =  req.header('refresh_token');
     
     const user_id = await jwt.verify(token,'secretkey');
 
     delete req.headers.authorization
-    console.log(req);
+    console.log(user_id);
     console.log("bunedirlo");
     res.json("success message");
 } catch (error) {

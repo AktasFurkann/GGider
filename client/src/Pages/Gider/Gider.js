@@ -12,6 +12,7 @@ Text,
   InputLeftElement,
   FormControl,
   CloseButton,
+  Select
   
 } from '@chakra-ui/react'
 
@@ -28,8 +29,8 @@ function Gider() {
 
   const [filterData,setFilterData] = useState('');
 
-  const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
-
+  const date = new Date().toISOString().slice(0,10);
+  
   const newGiderMutation = useMutation(giderleriKaydet, {
     onSuccess: () => queryClient.invalidateQueries("gider:getir")
   })
@@ -43,7 +44,8 @@ function Gider() {
         user:localStorage.getItem('userid'),
         tarih:date,
         aciklama:"",
-        miktar:""
+        miktar:"",
+        kategori:""
     },
     validationSchema,
     onSubmit : handleSubmit    
@@ -77,16 +79,21 @@ function Gider() {
         key: 'miktar',
       },
       {
+        title: 'Kategori',
+        dataIndex: 'kategori',
+        key: 'kategori',
+      },
+      {
         title: 'Action',
         key:'action',
         render: (text, record) => (
           <>
           <Popconfirm
-          title="are you sure"
+          title="Silmek istiyor musun?"
           onConfirm={() => {deleteMutation.mutate(record._id)}}
           onCancel={() => {console.log("silnmedi")}}
-          okText="yes"
-          cancelText="no"
+          okText="Evet"
+          cancelText="Hayır"
           placement='left'
           >
             <a href='/#'><CloseButton size='md' /></a>
@@ -116,7 +123,7 @@ function Gider() {
     
     <div>
 
-    <Input placeholder='Filtrele'  value={filterData} onChange={(e) => setFilterData(e.target.value)}  width='auto'/>
+    <Input left="500px" placeholder='Filtrele'  value={filterData} onChange={(e) => setFilterData(e.target.value)}  width='auto'/>
 
 
 <Text fontSize='3xl' w="300px">GİDERLER</Text>
@@ -126,6 +133,20 @@ function Gider() {
 
 <form onSubmit={formik.handleSubmit}>
         <Grid templateColumns='repeat(4, 1fr)' gap={5}>
+        <Select left="10px" id='kategori'
+        value={formik.values.kategori} 
+        onChange={formik.handleChange} 
+        onBlur={formik.handleBlur}
+        
+      >
+       <option value="">Seçiniz..</option>
+       <option value="Market">Market</option>
+       <option value="Araç">Araç</option>
+       <option value="Fatura">Fatura</option>
+       <option value="Eğlence">Eğlence</option>
+        <option value="Yemek">Yemek</option>
+        <option value="Diğer">Diğer</option>
+      </Select>
           <GridItem>
           <FormControl>
           <Input
@@ -174,7 +195,7 @@ function Gider() {
           
 <GridItem w="100px">
 <FormControl>
-          <Button   w="100px" type='submit' > EKLE  </Button>
+          <Button left="1200px" bgColor="cyan.100 " w="150px" type='submit' > EKLE  </Button>
           </FormControl>
 </GridItem>
           

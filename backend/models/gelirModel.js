@@ -19,13 +19,17 @@ const gelirSchema = new Schema({
     },
     aciklama:{
         type: String,
-        required:true,
         lowercase :true,
         trim : true,
-    }  
+    },
+    kategori:{
+        type: String,
+        required: true,
+        lowercase: true,
+        trim: true
+    }
 },{collection : 'gelirler' , timestamps : true});
 
 const Gelir = mongoose.model('Gelir',gelirSchema);
 
 module.exports = Gelir;
-

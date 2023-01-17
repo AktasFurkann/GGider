@@ -32,9 +32,10 @@ const userSchema = new Schema({
 
 userSchema.methods.generateToken = async function (){
     const girisYapanUser = this;
-    const token = await jwt.sign({_id:girisYapanUser._id},"secretkey",{expiresIn : "1d"});
+    const token = await jwt.sign({_id:girisYapanUser._id},"secretkey",{expiresIn : "1h"}); 
+    const refreshToken = await jwt.sign({_id:girisYapanUser._id},"secretkey",{expiresIn : "180d"});
 
-    return token;
+    return {token,refreshToken};
 }
 
 

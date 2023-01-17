@@ -1,6 +1,6 @@
 import { Flex, Spinner } from '@chakra-ui/react';
 import {useState,createContext,useEffect,useContext} from 'react'
-import { fetcMe, kullaniciCikis } from '../api';
+import { fetcMe, kullaniciCikis,fetchRefresh } from '../api';
 
 
 
@@ -17,10 +17,20 @@ const AuthProvider = ({children}) => {
         (async () => {
             try {
                 const me = await fetcMe();
-                if (me !== "token yok") {
-                    setLoggedIn(true);
+                
+                if (me.mesaj !== "token yok" && me.mesaj !== "jwt expired") {
+                console.log(me);
+                setLoggedIn(true);
                 setUser(me);
                 setLoading(false);
+                }
+                if(me.mesaj === "jwt expired"){
+                    const ref = await fetchRefresh();
+                    console.log(ref);
+                    setLoggedIn(true)
+                    localStorage.setItem("refresh-token",ref.refreshToken);
+                    localStorage.setItem("access-token",ref.token);
+                    setUser(ref.data);
                 }
                 setLoading(false);
 
@@ -35,7 +45,9 @@ const AuthProvider = ({children}) => {
         setLoading(false);
         setLoggedIn(true);
         setUser(data.user);
+        console.log(data);
         localStorage.setItem('access-token', data.token);
+        localStorage.setItem('refresh-token', data.refreshToken);
         localStorage.setItem('userid', data.user._id);
     }
 
@@ -45,6 +57,7 @@ const AuthProvider = ({children}) => {
         await kullaniciCikis();
 
         localStorage.removeItem('access-token');
+        localStorage.removeItem('refresh-token');
         localStorage.removeItem('userid');
 
       }

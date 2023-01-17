@@ -11,6 +11,8 @@ const giderleriListele = async (req,res) => {
 
 const giderEkle = async (req,res) => {
     try {
+        console.log("işteşu",req.body);
+        
         const eklenecekGider =  new Gider(req.body);
         const sonuc = await eklenecekGider.save();
         

@@ -12,25 +12,20 @@ Text,
   InputLeftElement,
   FormControl,
   CloseButton,
-  
+  Select
 } from '@chakra-ui/react'
 
 import validationSchema from './validations'
 import { Popconfirm, Table } from "antd";
 
-
 const current = new Date();
-
-
-
-
 
 function Gelir() {
   
 
   const [filterData,setFilterData] = useState('');
 
-  const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
+  const date = new Date().toISOString().slice(0,10);
 
   const newGelirMutation = useMutation(gelirleriKaydet, {
     onSuccess: () => queryClient.invalidateQueries("gelir:getir")
@@ -45,7 +40,8 @@ function Gelir() {
         user:localStorage.getItem('userid'),
         tarih:date,
         aciklama:"",
-        miktar:""
+        miktar:"",
+        kategori:""
     },
     validationSchema,
     onSubmit : handleSubmit    
@@ -79,16 +75,21 @@ function Gelir() {
         key: 'miktar',
       },
       {
+        title: 'Kategori',
+        dataIndex: 'kategori',
+        key: 'kategori',
+      },
+      {
         title: 'Action',
         key:'action',
         render: (text, record) => (
           <>
           <Popconfirm
-          title="are you sure"
+          title="Silmek istiyor musun?"
           onConfirm={() => {deleteMutation.mutate(record._id)}}
           onCancel={() => {console.log("silnmedi")}}
-          okText="yes"
-          cancelText="no"
+          okText="Evet"
+          cancelText="Hayır"
           placement='left'
           >
             <a href='/#'><CloseButton size='md' /></a>
@@ -118,7 +119,7 @@ function Gelir() {
     
     <div>
 
-    <Input placeholder='Filtrele'  value={filterData} onChange={(e) => setFilterData(e.target.value)}  width='auto'/>
+    <Input left="500px" placeholder='Filtrele'  value={filterData} onChange={(e) => setFilterData(e.target.value)}  width='auto'/>
 
 
 <Text fontSize='3xl' w="300px">GELİRLER</Text>
@@ -128,8 +129,26 @@ function Gelir() {
 
 <form onSubmit={formik.handleSubmit}>
         <Grid templateColumns='repeat(4, 1fr)' gap={5}>
+
+        <Select left="10px" id='kategori'
+        value={formik.values.kategori} 
+        onChange={formik.handleChange} 
+        onBlur={formik.handleBlur}
+
+      >
+       <option value="">Seçiniz..</option>
+       <option value="Kira">Kira</option>
+       <option value="Maaş">Maaş</option>
+       <option value="Faiz">Faiz</option>
+       <option value="Prim">Prim</option>
+        <option value="Diğer">Diğer</option>
+      </Select>
+
           <GridItem>
+            
           <FormControl>
+          
+
           <Input
            name='tarih' 
         type="date"
@@ -170,13 +189,16 @@ function Gelir() {
     borderColor="green"
       width='200px'/>
   </InputGroup>
+
+  
           </FormControl>
          </GridItem>
 
           
 <GridItem w="100px">
 <FormControl>
-          <Button   w="100px" type='submit' > EKLE  </Button>
+<Button left="1200px" bgColor="cyan.100 " w="150px" type='submit' > EKLE  </Button>
+          
           </FormControl>
 </GridItem>
           
@@ -184,26 +206,13 @@ function Gelir() {
           </Grid>
         </form>
 
-        
-        
-
 <br>
 </br>
 <br>
 </br>
-
-
 <Table dataSource={filtered} columns={columns} rowKey="_id"/>
-
-
-
-      
-
 <br></br>
 <br></br>
-
-
-
 
     </div>
   )

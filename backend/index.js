@@ -1,6 +1,5 @@
 const express = require('express');
 require('./db/dbConnection');
-
 const hataMiddleware = require('./middlewares/hataMiddleware');
 
 const app = express();
@@ -39,7 +38,6 @@ app.use('/api/users' , userRouter)
 app.use('/' , (req,res) => {
     res.json({"hoşgeldin" : "burası backend"});
 })
-
 
 app.use(hataMiddleware)
 
