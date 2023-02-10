@@ -1,15 +1,12 @@
 const Gelir = require("../models/gelirModel");
 
 const gelirleriListele = async (req,res) => {
-    console.log("iştebu",req.headers.user);
     const tumGelirler = await Gelir.find({user:req.headers.user});
     res.json(tumGelirler);
 }
 
 const gelirEkle = async (req,res) => {
     try {
-        console.log("işteşu",req.body);
-
         const eklenecekGelir =  new Gelir(req.body);
         const sonuc = await eklenecekGelir.save();
         

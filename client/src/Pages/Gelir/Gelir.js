@@ -119,7 +119,7 @@ function Gelir() {
     
     <div>
 
-    <Input left="500px" placeholder='Filtrele'  value={filterData} onChange={(e) => setFilterData(e.target.value)}  width='auto'/>
+    <Input left="500px" placeholder='Filtrele'  value={filterData} onChange={(e) => setFilterData(e.target.value)}  width='auto' borderColor="darkblue"/>
 
 
 <Text fontSize='3xl' w="300px">GELİRLER</Text>

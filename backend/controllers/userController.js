@@ -62,7 +62,6 @@ try {
 
     delete req.headers.authorization
     console.log(user_id);
-    console.log("bunedirlo");
     res.json("success message");
 } catch (error) {
     res.json(error);

@@ -25,7 +25,7 @@ function Header() {
       <Navbar bg="dark" expand="lg" variant='dark' >
         <Container text-align="justify">
           <Navbar.Brand href="/">
-            <h1>AktasFamily.com</h1>
+            <h1>GGider.com</h1>
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -52,7 +52,6 @@ function Header() {
 
                 {
                   loggedIn && (<>
-                    <Button colorScheme='pink' onClick={() => navigate("/Profile")}>Profile</Button>
                     <Button colorScheme='pink' onClick={handleLogout}>Çıkış</Button>
                   </>)
                 }

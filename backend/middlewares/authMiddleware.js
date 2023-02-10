@@ -6,9 +6,7 @@ const createError = require('http-errors');
 const auth = async (req,res,next) => {
     
         const authorizationToken = req.headers["authorization"];
-        console.log(authorizationToken+"ssssseeeeellllaaaammmm");
         if (!authorizationToken) {
-            console.log("aa");
             // res.json("token yok");
             next(createError(404,"token yok"));
         }else{

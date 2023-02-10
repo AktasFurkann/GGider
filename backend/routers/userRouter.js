@@ -20,7 +20,7 @@ router.get("/me" , authMiddleware , async (req,res,next) => {
 		}
 
 	} catch (e) {
-		console.log("yakaladın beni" , e);
+		console.log(e);
 		res.json("hata");
 	}
 })
@@ -40,14 +40,10 @@ router.post("/refresh_token" ,async (req,res,next) => {
 	// }
 	
 	try {
-		console.log(req.body.refresh_token);
 		const authorizationToken = req.body.refresh_token;
-		console.log(authorizationToken);
 		const sonuc = jwt.verify(authorizationToken, "secretkey")
-		console.log(sonuc._id);
 		
-		 const user = await User.findById(sonuc._id);
-console.log(user);
+		const user = await User.findById(sonuc._id);
 		 const {token,refreshToken} = await user.generateToken();
 		 res.send({user,token,refreshToken});
 	} catch (e) {
